@@ -186,7 +186,6 @@ public class signupone extends JFrame {
 
         //Content Pane
         getContentPane().setBackground(Color.WHITE);
-
         setSize(850, 800);
         setLocation(350, 10);
         setVisible(true);
