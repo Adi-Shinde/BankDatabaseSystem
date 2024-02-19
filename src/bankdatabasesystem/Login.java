@@ -35,7 +35,7 @@ public class Login extends JFrame implements ActionListener {
         label.setBounds(110, 50, 100, 100);
         add(label);
 
-        //welcome to atm text and setting bounds
+        //Welcome to atm text and setting bounds
         JLabel text = new JLabel("Welcome to ATM");
         text.setFont(new Font("Osward", Font.BOLD, 30));
         text.setBounds(240, 60, 300, 100);
