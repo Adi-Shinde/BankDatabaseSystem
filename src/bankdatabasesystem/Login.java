@@ -1,5 +1,4 @@
 //IMPLEMENT LUHNS ALGORTHIM login() if(cardnumber != luhns) sysout "Invalid"
-
 package bankdatabasesystem;
 
 import javax.swing.*;
@@ -15,9 +14,9 @@ public class Login extends JFrame implements ActionListener {
     JPasswordField passtext;
 
     Login() {
-       
+
         //Nimbus Look 
-                try {
+        try {
             UIManager.setLookAndFeel(new NimbusLookAndFeel());
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
@@ -56,13 +55,13 @@ public class Login extends JFrame implements ActionListener {
         //adding password text box and setting bounds
         passtext = new JPasswordField();
         passtext.setBounds(230, 310, 230, 30);
-      passtext.setFont(new Font("Arial",Font.PLAIN,14));
+        passtext.setFont(new Font("Arial", Font.PLAIN, 14));
         add(passtext);
 
         //adding card number text box and setting bounds
         cardnotext = new JTextField();
         cardnotext.setBounds(230, 230, 230, 30);
-        cardnotext.setFont(new Font("Arial",Font.PLAIN,14));
+        cardnotext.setFont(new Font("Arial", Font.PLAIN, 14));
         add(cardnotext);
 
         //Login button and setting bounds
@@ -107,6 +106,7 @@ public class Login extends JFrame implements ActionListener {
         } else if (ae.getSource() == signup) {
             setVisible(false);
             new SignupOne().setVisible(true);
+
         } else if (ae.getSource() == login) {
 
         }
@@ -115,6 +115,6 @@ public class Login extends JFrame implements ActionListener {
     //main main method
     public static void main(String args[]) {
         new Login();
-     
+
     }
 }
