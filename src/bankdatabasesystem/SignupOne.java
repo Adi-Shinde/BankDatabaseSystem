@@ -12,7 +12,7 @@ public class SignupOne extends JFrame implements ActionListener {
     //Global Variables
     long random;
     JTextField nametext, fnametext, emailtext, addtext, citytext, postaltext;
-    JButton next;
+    JButton next, previous;
     JRadioButton male, female, other, married, unmarried;
     JDateChooser datechoose;
     JComboBox provinceList;
@@ -163,7 +163,7 @@ public class SignupOne extends JFrame implements ActionListener {
         citytext.setBounds(300, 490, 400, 30);
         add(citytext);
 
-        //Province and JCombobox
+        //Province and JCombobox    
         JLabel prov = new JLabel("Province:");
         prov.setFont(new Font("Raleway", Font.BOLD, 20));
         prov.setBounds(100, 540, 200, 30);
@@ -196,6 +196,14 @@ public class SignupOne extends JFrame implements ActionListener {
         next.addActionListener(this);
         add(next);
 
+        previous = new JButton("Previous");
+        previous.setBackground(Color.BLACK);
+        previous.setForeground(Color.WHITE);
+        previous.setFont(new Font("Raleway", Font.BOLD, 14));
+        previous.setBounds(510, 660, 90, 30);
+        previous.addActionListener(this);
+        add(previous);
+
         //Content Pane
         getContentPane().setBackground(Color.WHITE);
         setSize(850, 800);
@@ -207,84 +215,93 @@ public class SignupOne extends JFrame implements ActionListener {
     //action to be performed after clicking button
     public void actionPerformed(ActionEvent ae) {
 
-        //convert all data to string to store from textfields
-        String formno = "" + random;//long
-        String name = nametext.getText(); //settext change text, get text extract text
-        String fname = fnametext.getText();
-        String dob = ((JTextField) datechoose.getDateEditor().getUiComponent()).getText();
-        //convert data to string from Gender radiobutton
-        String gender = null;
-        if (male.isSelected()) {
-            gender = "Male";
-        } else if (female.isSelected()) {
-            gender = "Female";
+        
+            //convert all data to string to store from textfields
+            String appno = "" + random;//long
+            String name = nametext.getText(); //settext change text, get text extract text
+            String fname = fnametext.getText();
+            String dob = ((JTextField) datechoose.getDateEditor().getUiComponent()).getText();
+            //convert data to string from Gender radiobutton
+            String gender = null;
+            if (male.isSelected()) {
+                gender = "Male";
+            } else if (female.isSelected()) {
+                gender = "Female";
+            }
+            String email = emailtext.getText();
+            //convert data to string from marital radiobutton
+            String marital = null;
+            if (married.isSelected()) {
+                marital = "Married";
+            } else if (unmarried.isSelected()) {
+                marital = "Unmarried";
+            } else if (other.isSelected()) {
+                marital = "Other";
+            }
+            String address = addtext.getText();
+            String city = citytext.getText();
+            String postal = postaltext.getText();
+            String province = (String) provinceList.getSelectedItem();
+           
+if (ae.getSource() == next) {
+            //try and catch 
+            try {
+
+                //check if user enters all data or not
+                StringBuilder errors = new StringBuilder();
+                if (name.equals("")) {
+                    errors.append("Name, ");
+                }
+                if (fname.equals("")) {
+                    errors.append("Father's name, ");
+                }
+                if (dob.equals("")) {
+                    errors.append("Date of birth, ");
+                }
+                if (gender == null) {
+                    errors.append("Gender, ");
+                }
+                if (email.equals("")) {
+                    errors.append("Email Address, ");
+                }
+                if (marital == null) {
+                    errors.append("Marital Status, ");
+                }
+                if (address.equals("")) {
+                    errors.append("Address, ");
+                }
+                if (city.equals("")) {
+                    errors.append("City, ");
+                }
+                if(province.equals("")){
+                    errors.append("Province, ");
+                }
+                if (postal.equals("")) {
+                    errors.append("Postal Code, ");
+                }
+
+                //if all data is not entered output dialog box
+                if (errors.length() > 0) {
+                    errors.setLength(errors.length() - 2);
+                    errors.append(" is required.");
+                    JOptionPane.showMessageDialog(null, errors.toString());
+                    //if data entered, store in database
+                } else {
+                    conn c = new conn();
+                    String query = "insert into signup values('" + appno + "', '" + name + "', '" + fname + "', '" + dob + "', '" + gender + "', '" + email + "', '" + marital + "', '" + address + "', '" + city + "', '" + postal + "', '" + province + "')";
+                    c.s.executeUpdate(query);
+                    System.out.print(query);
+                    setVisible(false);
+                    new SignupTwo(appno).setVisible(true);
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }   
         }
-        String email = emailtext.getText();
-        //convert data to string from marital radiobutton
-        String marital = null;
-        if (married.isSelected()) {
-            marital = "Married";
-        } else if (unmarried.isSelected()) {
-            marital = "Unmarried";
-        } else if (other.isSelected()) {
-            marital = "Other";
+        if (ae.getSource() == previous) {
+            setVisible(false);
+            new Login().setVisible(true);
         }
-        String address = addtext.getText();
-        String city = citytext.getText();
-        String postal = postaltext.getText();
-        String province = (String) provinceList.getSelectedItem();
-
-        //try and catch 
-        try {
-
-            //check if user enters all data or not
-            StringBuilder errors = new StringBuilder();
-            if (name.equals("")) {
-                errors.append("Name, ");
-            }
-            if (fname.equals("")) {
-                errors.append("Father's name, ");
-            }
-            if (dob.equals("")) {
-                errors.append("Date of birth, ");
-            }
-            if (gender == null) {
-                errors.append("Gender, ");
-            }
-            if (email.equals("")) {
-                errors.append("Email Address, ");
-            }
-            if (marital == null) {
-                errors.append("Marital Status, ");
-            }
-            if (address.equals("")) {
-                errors.append("Address, ");
-            }
-            if (city.equals("")) {
-                errors.append("City, ");
-            }
-            if (postal.equals("")) {
-                errors.append("Postal Code, ");
-            }
-
-            //if all data is not entered output dialog box
-            if (errors.length() > 0) {
-                errors.setLength(errors.length() - 2);
-                errors.append(" is required.");
-                JOptionPane.showMessageDialog(null, errors.toString());
-                //if data entered, store in database
-            } else {
-                conn c = new conn();
-                String query = "insert into signup values('" + formno + "', '" + name + "', '" + fname + "', '" + dob + "', '" + gender + "', '" + email + "', '" + marital + "', '" + address + "', '" + city + "', '" + postal + "', '" + province + "')";
-                c.s.executeUpdate(query);
-                System.out.print(query);
-                setVisible(false);
-                new SignupTwo(formno).setVisible(true);
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
     }
 
     public static void main(String args[]) {

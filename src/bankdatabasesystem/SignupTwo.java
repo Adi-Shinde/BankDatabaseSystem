@@ -11,13 +11,14 @@ public class SignupTwo extends JFrame implements ActionListener {
 
     //Global Variables
     JTextField secqstext, sintext;
-    JButton next;
+    JButton next, previous;
     JRadioButton sno, syes, eno, eyes;
     JComboBox secqslist, edulist, incomelist, occlist;
-    String formno;
+    String appno;
 
-    SignupTwo(String formno) {
-        this.formno = formno;
+    SignupTwo(String appno) {
+        this.appno = appno;
+
         //Nimbus look and feel
         try {
             UIManager.setLookAndFeel(new NimbusLookAndFeel());
@@ -46,7 +47,7 @@ public class SignupTwo extends JFrame implements ActionListener {
         add(secqs1);
 
         // Options for security questions
-        String[] secqsarray = {"", "What city were you born in?", "What is the name of your first pet?", "What is your mother's maiden name?", "What was the first concert you attended?", "What is the name of your favourite childhood friend?", "What was your first car?", "What is the name of the street you grew up in?"};
+        String[] secqsarray = {"", "What city were you born in?", "What is the name of your first pet?", "What is your mothers maiden name?", "What was the first concert you attended?", "What is the name of your favourite childhood friend?", "What was your first car?", "What is the name of the street you grew up in?"};
         secqslist = new JComboBox(secqsarray);
         secqslist.setFont(new Font("Raleway", Font.PLAIN, 14));
         secqslist.setBounds(300, 190, 400, 30);
@@ -166,6 +167,14 @@ public class SignupTwo extends JFrame implements ActionListener {
         next.addActionListener(this);
         add(next);
 
+        previous = new JButton("Previous");
+        previous.setBackground(Color.BLACK);
+        previous.setForeground(Color.WHITE);
+        previous.setFont(new Font("Raleway", Font.BOLD, 14));
+        previous.setBounds(510, 660, 90, 30);
+        previous.addActionListener(this);
+        add(previous);
+
         //Content Pane
         getContentPane().setBackground(Color.WHITE);
         setSize(850, 800);
@@ -200,51 +209,60 @@ public class SignupTwo extends JFrame implements ActionListener {
             existingaccount = "No";
         }
 
-        //try and catch 
-        try {
+        if (ae.getSource() == next) {
+            //try and catch 
+            try {
 
-            StringBuilder errors = new StringBuilder();
-            if (securityquestions.equals("")) {
-                errors.append("Security Question, ");
-            }
-            if (securityanswers.equals("")) {
-                errors.append("Security Answer, ");
-            }
-            if (educationalqualifications.equals("")) {
-                errors.append("Educational Qualifications ");
-            }
-            if (income.equals("")) {
-                errors.append("Income, ");
-            }
-            if (occupation.equals("")) {
-                errors.append("Occupation, ");
-            }
-            if (sinnumber.equals("")) {
-                errors.append("Sin Number, ");
-            }
-            if (seniorcitizen == null) {
-                errors.append("Senior Citizen, ");
-            }
-            if (existingaccount == null) {
-                errors.append("Existing Account, ");
-            }
+                StringBuilder errors = new StringBuilder();
+                if (securityquestions.equals("")) {
+                    errors.append("Security Question, ");
+                }
+                if (securityanswers.equals("")) {
+                    errors.append("Security Answer, ");
+                }
+                if (educationalqualifications.equals("")) {
+                    errors.append("Educational Qualifications ");
+                }
+                if (income.equals("")) {
+                    errors.append("Income, ");
+                }
+                if (occupation.equals("")) {
+                    errors.append("Occupation, ");
+                }
+                if (sinnumber.equals("")) {
+                    errors.append("Sin Number, ");
+                }
+                if (seniorcitizen == null) {
+                    errors.append("Senior Citizen, ");
+                }
+                if (existingaccount == null) {
+                    errors.append("Existing Account, ");
+                }
 
-            //if all data is not entered output dialog box
-            if (errors.length() > 0) {
-                errors.setLength(errors.length() - 2);
-                errors.append(" is required.");
-                JOptionPane.showMessageDialog(null, errors.toString());
-                //if data entered, store in database
-            } else {
-                conn c = new conn();
-                String query = "insert into signuptwo values('" + formno + "', '" + securityquestions + "', '" + securityanswers + "', '" + educationalqualifications + "', '" + income + "', '" + occupation + "', '" + sinnumber + "', '" + seniorcitizen + "', '" + existingaccount + "')";
-                c.s.executeUpdate(query);
-                System.out.print(query);
-                setVisible(false);
+                //if all data is not entered output dialog box
+                if (errors.length() > 0) {
+                    errors.setLength(errors.length() - 2);
+                    errors.append(" is required.");
+                    JOptionPane.showMessageDialog(null, errors.toString());
+                    //if data entered, store in database
+                } else {
+                    conn c = new conn();
+                    String query1 = "insert into signuptwo values('" + appno + "', '" + securityquestions + "', '" + securityanswers + "', '" + educationalqualifications + "', '" + income + "', '" + occupation + "', '" + sinnumber + "', '" + seniorcitizen + "', '" + existingaccount + "')";
+                    c.s.executeUpdate(query1);
+                    System.out.print(query1);
+
+                    setVisible(false);
+                    new SignupThree(appno).setVisible(true);
+
+                }            //signup3 object
+
+            } catch (Exception e) {
+                System.out.println(e);
             }
-            //signup3 object
-        } catch (Exception e) {
-            System.out.println(e);
+        } 
+        if(ae.getSource()==previous){
+        setVisible(false);
+        new SignupOne().setVisible(true);
         }
     }
 
