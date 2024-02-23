@@ -207,7 +207,7 @@ public class SignupOne extends JFrame implements ActionListener {
         //Content Pane
         getContentPane().setBackground(Color.WHITE);
         setSize(850, 800);
-        setLocation(350, 10);
+        setLocationRelativeTo(null);
         setVisible(true);
 
     }

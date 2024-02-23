@@ -185,7 +185,7 @@ public class SignupThree extends JFrame implements ActionListener {
         //content pane
         getContentPane().setBackground(Color.WHITE);
         setSize(700, 820);
-        setLocation(350, 30);
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 

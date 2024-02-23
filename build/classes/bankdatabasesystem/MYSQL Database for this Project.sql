@@ -1,7 +1,5 @@
 create database BankManagementSystemDB;
 
-show databases;
-
 use BankManagementSystemDB;
 
 CREATE TABLE signup (
@@ -48,6 +46,8 @@ select * from signup;
 select * from signuptwo;
 select * from signupthree;
 select * from login;
+
+show databases;
 
 show tables;
 

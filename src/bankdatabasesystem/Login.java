@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+import java.sql.*;
 
 public class Login extends JFrame implements ActionListener {
 
@@ -94,7 +95,7 @@ public class Login extends JFrame implements ActionListener {
         //window size
         setSize(600, 560);
         setVisible(true);
-        setLocation(600, 230);
+        setLocationRelativeTo(null);
     }
 
     //main method for actions on button
@@ -108,7 +109,22 @@ public class Login extends JFrame implements ActionListener {
             new SignupOne().setVisible(true);
 
         } else if (ae.getSource() == login) {
-
+            conn c = new conn();
+            String passwordnumber = passtext.getText();
+            String cardnumber = cardnotext.getText();
+            String query = "select * from login where card_number = '" + cardnumber + "' and pin_number = '" + passwordnumber + "'";
+            try {
+                ResultSet rs = c.s.executeQuery(query);
+                if (rs.next()) {
+                    setVisible(false);
+                    new transactions(passwordnumber).setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Incorrect Card Number or PIN.");
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            System.out.println("");
         }
     }
 
