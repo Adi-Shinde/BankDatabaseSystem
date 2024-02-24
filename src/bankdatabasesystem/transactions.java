@@ -8,9 +8,10 @@ import java.awt.event.*;
 public class transactions extends JFrame implements ActionListener {
 
     JButton deposit, withdraw, pinchange, exit, fastcash, balanceenq, ministate;
-String passwordnumber;
+    String passwordnumber;
+
     transactions(String passwordnumber) {
-     this.passwordnumber = passwordnumber;
+        this.passwordnumber = passwordnumber;
         setLayout(null);
 
         /*nimbus looka and feel
@@ -44,7 +45,7 @@ String passwordnumber;
         deposit.addActionListener(this);
         image.add(deposit);
 
-        withdraw = new JButton("Cash Withdrawl");
+        withdraw = new JButton("Cash Withdraw");
         withdraw.setBounds(437, 255, 150, 30);
         withdraw.setFont(new Font("", Font.BOLD | Font.ITALIC, 12));
         withdraw.addActionListener(this);
@@ -52,14 +53,14 @@ String passwordnumber;
 
         fastcash = new JButton("Fast Cash");
         fastcash.setBounds(225, 298, 150, 30);
-           fastcash.setFont(new Font("", Font.BOLD | Font.ITALIC, 12));
-       fastcash.addActionListener(this);
-       image.add(fastcash);
+        fastcash.setFont(new Font("", Font.BOLD | Font.ITALIC, 12));
+        fastcash.addActionListener(this);
+        image.add(fastcash);
 
         ministate = new JButton("Mini Statement");
         ministate.setBounds(437, 298, 150, 30);
         ministate.setFont(new Font("", Font.BOLD | Font.ITALIC, 12));
-       ministate.addActionListener(this);
+        ministate.addActionListener(this);
         image.add(ministate);
 
         pinchange = new JButton("PIN Change");
@@ -89,27 +90,32 @@ String passwordnumber;
 
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == deposit) {
-
+            setVisible(false);
+            new deposit(passwordnumber).setVisible(true);
         }
 
         if (ae.getSource() == withdraw) {
-
+            setVisible(false);
+            new withdrawl(passwordnumber).setVisible(true);
         }
 
         if (ae.getSource() == fastcash) {
-
+            setVisible(false);
+            new fastcash(passwordnumber).setVisible(true);
         }
 
         if (ae.getSource() == ministate) {
-
+            new ministatement(passwordnumber).setVisible(true);
         }
 
         if (ae.getSource() == pinchange) {
-
+            setVisible(false);
+            new pinchange(passwordnumber).setVisible(true);
         }
 
         if (ae.getSource() == balanceenq) {
-
+            setVisible(false);
+            new balanceenquiry(passwordnumber).setVisible(true);
         }
 
         if (ae.getSource() == exit) {

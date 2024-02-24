@@ -4,16 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.event.*;
-import java.util.*;
-import java.sql.ResultSet;
+import java.sql.*;
+import java.util.Date;
 
-public class deposit extends JFrame implements ActionListener {
+public class withdrawl extends JFrame implements ActionListener {
 
     JTextField amount;
-    JButton deposit, back;
+    JButton withdraw, back;
     String passwordnumber;
 
-    deposit(String passwordnumber) {
+    withdrawl(String passwordnumber) {
         this.passwordnumber = passwordnumber;
         setLayout(null);
 
@@ -30,7 +30,7 @@ public class deposit extends JFrame implements ActionListener {
         text.setFont(new Font("System", Font.BOLD, 16));
         image.add(text);
 
-        JLabel text1 = new JLabel("the amount to deposit.");
+        JLabel text1 = new JLabel("the amount to withdraw.");
         text1.setBounds(320, 175, 700, 35);
         text1.setForeground(Color.WHITE);
         text1.setFont(new Font("System", Font.BOLD, 16));
@@ -41,11 +41,11 @@ public class deposit extends JFrame implements ActionListener {
         amount.setBounds(245, 220, 320, 25);
         image.add(amount);
 
-        deposit = new JButton("Deposit");
-        deposit.setBounds(225, 380, 150, 30);
-        deposit.setFont(new Font("", Font.BOLD | Font.ITALIC, 12));
-        deposit.addActionListener(this);
-        image.add(deposit);
+        withdraw = new JButton("Withdraw");
+        withdraw.setBounds(225, 380, 150, 30);
+        withdraw.setFont(new Font("", Font.BOLD | Font.ITALIC, 12));
+        withdraw.addActionListener(this);
+        image.add(withdraw);
 
         back = new JButton("Back");
         back.setBounds(437, 380, 150, 30);
@@ -75,7 +75,7 @@ public class deposit extends JFrame implements ActionListener {
         } catch (Exception e) {
             System.out.println(e);
         }
-
+        
         setSize(1024, 805);
         setLocationRelativeTo(null); // this will center the JFrame on the screen
         setUndecorated(true);
@@ -84,19 +84,41 @@ public class deposit extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent ae) {
 
-        if (ae.getSource() == deposit) {
+        if (ae.getSource() == withdraw) {
             String money = amount.getText();
             Date date = new Date();
             if (money.equals("")) {
-                JOptionPane.showMessageDialog(null, "Please Enter the amount you want to deposit");
+                JOptionPane.showMessageDialog(null, "Please Enter the amount you want to Withdraw");
             } else {
                 try {
                     conn c = new conn();
-                    String query = "insert into bank values('" + passwordnumber + "', '" + date + "','Deposit','" + money + "')";
+
+                    ResultSet rs = c.s.executeQuery("select * from bank where pinnumber ='" + passwordnumber + "'");
+                    int balance = 0;
+
+                    while (rs.next()) {
+                        if (rs.getString("type").equals("Deposit")) {
+                            balance = balance + Integer.parseInt(rs.getString("amount"));
+                        } else {
+                            balance = balance - Integer.parseInt(rs.getString("amount"));
+                        }
+                    }
+
+                    if (ae.getSource() != back && balance < Integer.parseInt(money)) {
+                        JOptionPane.showMessageDialog(null, "Insufficient Balance");
+                        return;
+                    }
+
+                     System.out.println(balance);
+             
+                
+                    
+                    String query = "insert into bank values('" + passwordnumber + "', '" + date + "','Withdrawl','" + money + "')";
                     c.s.executeUpdate(query);
-                    JOptionPane.showMessageDialog(null, "$" + money + " deposited successfully.");
+                    JOptionPane.showMessageDialog(null, "$" + money + " withdrawed successfully.");
                     setVisible(false);
                     new transactions(passwordnumber).setVisible(true);
+
                 } catch (Exception e) {
                     System.out.println(e);
                 }
@@ -110,6 +132,6 @@ public class deposit extends JFrame implements ActionListener {
     }
 
     public static void main(String args[]) {
-        new deposit("");
+        new withdrawl("");
     }
 }

@@ -191,7 +191,7 @@ public class SignupThree extends JFrame implements ActionListener {
 
     //after clicking button
     public void actionPerformed(ActionEvent ae) {
-        
+
         //if submit button clicked
         if (ae.getSource() == submit) {
             String accounttype = "";
@@ -211,10 +211,10 @@ public class SignupThree extends JFrame implements ActionListener {
             Random random = new Random();
             String cardnumber = "" + Math.abs((random.nextLong() % 90000000L + 5040936000000000L));
 
-            //String pinnumber = "" + Math.abs((random.nextLong() % 9000L) + 1000L);
+            //String passwordnumber = "" + Math.abs((random.nextLong() % 9000L) + 1000L);
             //accept services
             StringBuilder service = new StringBuilder();
-            
+
             if (c1.isSelected()) {
                 service.append("Request ATM Card, ");
             }
@@ -233,20 +233,21 @@ public class SignupThree extends JFrame implements ActionListener {
             if (c6.isSelected()) {
                 service.append("Enroll for E-Statements, ");
             }
-           
+
             //remove ,
-if(service.length()!=0)
-    service.setLength(service.length()-2);
-         
+            if (service.length() != 0) {
+                service.setLength(service.length() - 2);
+            }
+
 //check if Terms are checked
             String checkbox = "";
             if (c7.isSelected()) {
                 checkbox = checkbox + "Agreed";
             }
-            
+
             //try and catch to MYSQL
             try {
-                
+
                 //see if all options are clicked
                 StringBuilder errors = new StringBuilder();
 
@@ -259,40 +260,43 @@ if(service.length()!=0)
 
                 //if options not clicked, dialog box
                 if (errors.length() > 0 || !checkbox.equals("Agreed")) {
-                    
+
                     //dialog box for options not clicked
                     if (errors.length() > 0) {
                         errors.setLength(errors.length() - 2);
                         errors.append(" is required.");
                         JOptionPane.showMessageDialog(null, errors.toString());
                     }
-                    
+
                     //dialog box for terms not clicked
                     if (!checkbox.equals("Agreed")) {
                         JOptionPane.showMessageDialog(null, "CONFIRM the Terms and Conditions");
                     }
-                    
+
                 } else {
                     //to accept pin number
-                    String pinnumber = JOptionPane.showInputDialog("Enter Your 4 digit Pin Here", "PIN");
+                    String passwordnumber = JOptionPane.showInputDialog("Enter Your 4 digit Pin Here", "PIN");
                     //check if pin is numbers or not
-                    boolean isNumeric = pinnumber.matches("\\d+");
-                    
+                    boolean isNumeric = passwordnumber.matches("\\d+");
+
                     //check if pin is 4 digits and numbers both
-                    if (isNumeric == true && pinnumber.length() == 4) {
-                        
-                        //send data to sql (query3 is for cardnumber and pinnumber exclusively)
+                    if (isNumeric == true && passwordnumber.length() == 4) {
+
+                        //send data to sql (query3 is for cardnumber and passwordnumber exclusively)
                         conn c = new conn();
-                        String query2 = "insert into signupthree values('" + appno + "','" + accounttype + "','" + cardnumber + "','" + pinnumber + "','" + service + "')";
-                        String query3 = "insert into login values('" + appno + "','" + cardnumber + "','" + pinnumber + "')";
+                        String query2 = "insert into signupthree values('" + appno + "','" + accounttype + "','" + cardnumber + "','" + passwordnumber + "','" + service + "')";
+                        String query3 = "insert into login values('" + appno + "','" + cardnumber + "','" + passwordnumber + "')";
                         c.s.executeUpdate(query2);
                         c.s.executeUpdate(query3);
                         System.out.print(query2);
                         //output cardnumber and pin number
-                        JOptionPane.showMessageDialog(null, "<html><font size='3'>Card Number: " + cardnumber + "<br>Pin: " + pinnumber + "</font><br><font size='2'>(For Convenience remember only last 4 digits)</font></html>");
-                        setVisible(false);
-                    } else {
+                        JOptionPane.showMessageDialog(null, "<html><font size='3'>Card Number: " + cardnumber + "<br>Pin: " + passwordnumber + "</font><br><font size='2'>(For Convenience remember only last 4 digits)</font></html>");
                         
+                        setVisible(false);
+                        new deposit(passwordnumber).setVisible(true);
+
+                    } else {
+
                         //if pin number isnt 4 digits, dialog
                         JOptionPane.showMessageDialog(null, "Please Enter a pin that is 4 digits and has only numbers.");
                     }
@@ -301,12 +305,13 @@ if(service.length()!=0)
             } catch (Exception e) {
                 System.out.println(e);
             }
-            
+
         }
-        
+
         //if previous clicked
-        if(ae.getSource()==previous){
-        setVisible(false);
+        if (ae.getSource() == previous) {
+            setVisible(false);
+            
 
         }
     } // Closing bracket for actionPerformed method

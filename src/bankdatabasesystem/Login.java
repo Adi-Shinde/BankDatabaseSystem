@@ -112,7 +112,7 @@ public class Login extends JFrame implements ActionListener {
             conn c = new conn();
             String passwordnumber = passtext.getText();
             String cardnumber = cardnotext.getText();
-            String query = "select * from login where card_number = '" + cardnumber + "' and pin_number = '" + passwordnumber + "'";
+            String query = "select * from login where RIGHT(card_number, 4) = '" + cardnumber + "' and pin_number = '" + passwordnumber + "'";
             try {
                 ResultSet rs = c.s.executeQuery(query);
                 if (rs.next()) {
